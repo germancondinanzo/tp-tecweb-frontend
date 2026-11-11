@@ -1,36 +1,25 @@
-# TP Tecnologías Web - Frontend (Angular + Deploy)
+# TP Tecnologias Web - Frontend (Angular + Deploy)
 
-## Descripción
+## Descripcion
 
-Este es el frontend del Trabajo Práctico de la materia Tecnologías Web, correspondiente a la **Segunda Entrega**. Se conecta con el backend de NestJS entregado en la Primera Entrega.
+Este es el Trabajo Práctico de la materia Tecnologías Web, backend NestJS + frontend Angular. Segunda entrega.
 
-El proyecto consume los endpoints del backend para mostrar dos entidades con relación **1:N (Género → Banda)**:
+## Overview
 
-- **Género**: Clasificación de tipo musical (ej. Rock, Metal, Pop).
+El proyecto consume los endpoints del backend para mostrar dos entidades con relacion 1:N (Genero -> Banda):
+
+- **Genero**: Clasificación de tipo musical (ej. Rock, Metal, Pop).
 - **Banda**: Artista con sus campos (nombre, país, año de formación, género).
 
-La aplicación es una Single Page Application (SPA) construida con **Angular 20** usando **NgModules** (estándar de la cátedra), **Bootstrap 5** para el diseño responsive y **Template-Driven Forms**.
+La aplicación es una Single Page Application (SPA) construida con Angular 20 usando NgModules (estándar de la cátedra), Bootstrap 5 para el diseño responsive y Formularios Template-Driven.
 
----
-
-## 📦 Entidades y Relación
-
-| Entidad | Campos | Relación |
-|---|---|---|
-| **Género** | `id`, `nombre` (único) | **1** → muchas **Bandas** |
-| **Banda** | `id`, `nombre`, `país`, `anioFormacion`, `generoId` (FK) | Pertenece a un **Género** |
-
-La relación se visualiza en la UI: en la tabla de bandas, la columna "Género" muestra el nombre asociado (`banda.genero.nombre`).
-
----
-
-## 🚀 Levantamiento del Proyecto
+## Levantamiento del Proyecto
 
 El frontend necesita correr sobre el backend de la Primera Entrega. Seguí estos pasos:
 
 ### 1. Levantar el backend
 
-Entrá al repositorio del backend (`tp-tecweb-backend`) y seguí sus instrucciones de despliegue local. Normalmente:
+Entrá al repositorio del backend (tp-tecweb-backend) y seguí sus instrucciones de despliegue local. Normalmente:
 
 ```bash
 cd tp-tecweb-backend
@@ -38,7 +27,7 @@ npm install
 npm run start:dev
 ```
 
-El backend correrá en `http://localhost:3000` (puerto configurable).
+El backend correrá en http://localhost:3000 (puerto configurable).
 
 ### 2. Levantar el frontend
 
@@ -48,9 +37,9 @@ npm install
 npm start
 ```
 
-La app estará disponible en `http://localhost:4200/`.
+La app estará disponible en http://localhost:4200/.
 
-> **Importante:** El frontend realiza peticiones HTTP al backend en `localhost:3000`. Si el backend corren en otro puerto, hay que actualizar el `environment.ts`.
+> **Importante**: El frontend realiza peticiones HTTP al backend en localhost:3000. Si el backend corren en otro puerto, hay que actualizar el environment.ts.
 
 ### 3. Build de producción
 
@@ -58,26 +47,22 @@ La app estará disponible en `http://localhost:4200/`.
 npm run build
 ```
 
-Los archivos compilados quedan en `dist/tp-tecweb-frontend/browser`. Ese directorio es el que se sube a Netlify.
+Los archivos compilados quedan en dist/tp-tecweb-frontend/browser. Ese directorio es el que se sube a Netlify.
 
----
-
-## 🌐 Endpoints Consumidos (Backend v1)
+## Endpoints Consumidos (Backend v1)
 
 | Método | Endpoint | Descripción |
 |---|---|---|
-| `GET /generos` | Listado de todos los géneros |
-| `POST /generos` | Crear un nuevo género |
-| `PUT /generos/:id` | Editar un género |
-| `DELETE /generos/:id` | Borrar un género |
-| `GET /bandas` | Listado de bandas (con filtro opcional `?generoId=`) |
-| `POST /bandas` | Crear una nueva banda |
-| `PUT /bandas/:id` | Editar una banda |
-| `DELETE /bandas/:id` | Borrar una banda |
+| GET /generos | Listado de todos los géneros |
+| POST /generos | Crear un nuevo género |
+| PUT /generos/:id | Editar un género |
+| DELETE /generos/:id | Borrar un género |
+| GET /bandas | Listado de bandas (con filtro opcional ?generoId=) |
+| POST /bandas | Crear una nueva banda |
+| PUT /bandas/:id | Editar una banda |
+| DELETE /bandas/:id | Borrar una banda |
 
----
-
-## 📁 Estructura Importante
+## Estructura Importante
 
 ```
 /src
@@ -91,47 +76,37 @@ Los archivos compilados quedan en `dist/tp-tecweb-frontend/browser`. Ese directo
 /public         ← Archivos estáticos; contiene _redirects para Netlify
 ```
 
----
-
-## 📦 Scripts Disponibles
+## Scripts Disponibles
 
 | Script | Descripción |
 |---|---|
-| `npm install` | Instala dependencias (incluye Bootstrap 5) |
-| `npm start` | Inicia `ng serve` en `http://localhost:4200` |
-| `npm build` | Compila producción (`dist/tp-tecweb-frontend/browser`) |
-| `npm test` | Ejeciona `ng test` (Karma + Jest) |
+| npm install | Instala dependencias (incluye Bootstrap 5) |
+| npm start | Inicia ng serve en http://localhost:4200 |
+| npm build | Compila producción (dist/tp-tecweb-frontend/browser) |
+| npm test | Ejeciona ng test (Karma + Jest) |
 
----
-
-## 📦 Dependencias Clave
+## Dependencias Clave
 
 - **Angular 20.3.35** — framework
-- **Bootstrap 5.3.8** — estilo y responsive grid (cargado desde `angular.json`)
+- **Bootstrap 5.3.8** — estilo y responsive grid (cargado desde angular.json)
 - **RxJS 7.8.0** — programación reactiva
 - **Zone.js** — detección de cambios
 
-> **Nota:** No se usan Reactive Forms ni NgRx. El proyecto usa **Template-Driven Forms** (`[(ngModel)]`, `ngModel`, `forms`) tal como indica la consigna.
+> **Nota**: No se usan Reactive Forms ni NgRx. El proyecto usa Template-Driven Forms ((ngModel), ngModel, forms) tal como indica la consigna.
 
----
-
-## 🛠️ Posibles Problemas
+## Posibles Problemas
 
 | Problema | Causa | Solución |
 |---|---|---|
-| `ERR_CONNECTION_REFUSED` | El backend no está corriendo | Levantar `tp-tecweb-backend` |
-| `No provider found for _HttpClient` | El TestBed no tiene `provideHttpClient()` | Los tests ya incluyen `provideHttpClientTesting()` |
-| Estilos no aparecen al recargar | `ng serve` no recarga `angular.json` | Detener y reiniciar `ng serve` (`Ctrl+C` + `npm serve`) |
-| 404 al refrescar `/bandas` en Netlify | Falta `_redirects` | Ya está en `public/_redirects` con `/* /index.html 200` |
+| ERR_CONNECTION_REFUSED | El backend no está corriendo | Levantar tp-tecweb-backend |
+| No provider found for _HttpClient | El TestBed no tiene provideHttpClient() | Los tests ya incluyen provideHttpClientTesting() |
+| Estilos no aparecen al recargar | ng serve no recarga angular.json | Detener y reiniciar ng serve (Ctrl+C + npm serve) |
+| 404 al refrescar /bandas en Netlify | Falta _redirects | Ya está en public/_redirects con /* /index.html 200 |
 
----
+## Contacto / Entrega
 
-## 📬 Contacto / Entrega
+- **Repositorio frontend**: https://github.com/germancondinanzo/tp-tecweb-frontend
+- **Repositorio backend**: https://github.com/germancondinanzo/tp-tecweb-backend
+- **Autor**: Trabajo Práctico - Tecnologías Web (TUARI - UNICEN)
 
-- **Repositorio frontend:** `https://github.com/germancondinanzo/tp-tecweb-frontend`
-- **Repositorio backend:** `https://github.com/germancondinanzo/tp-tecweb-backend`
-- **Autor:** Trabajo Práctico - Tecnologías Web (TUARI - UNICEN)
-
----
-
-Hecho con ❤️ usando Angular 20, Bootstrap 5 y TypeScript.
+Hecho con Angular 20, Bootstrap 5 y TypeScript.
