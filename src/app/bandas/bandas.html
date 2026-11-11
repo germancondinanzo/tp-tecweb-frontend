@@ -1,5 +1,15 @@
 <h2>Bandas</h2>
 
+<label>
+  Género:
+  <select [(ngModel)]="generoFiltro" (ngModelChange)="cargarBandas()">
+    <option [ngValue]="null">Todos</option>
+    <option *ngFor="let genero of generos" [ngValue]="genero.id">
+      {{ genero.nombre }}
+    </option>
+  </select>
+</label>
+
 <p>Total: {{ bandas.length }}</p>
 
 <table>
