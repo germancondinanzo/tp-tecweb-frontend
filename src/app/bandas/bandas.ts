@@ -14,7 +14,7 @@ export class Bandas implements OnInit {
 
   bandas: Banda[] = [];
   generos: Genero[] = [];
-  paises: string[] = [];
+  paises: string[] = ['Todos'];
   paisFiltro: string | undefined = undefined;
   orderBy: 'anioASC' | 'anioDESC' | undefined = undefined;
   generoFiltro: number | null = null;
