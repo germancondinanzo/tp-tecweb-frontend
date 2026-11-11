@@ -6,11 +6,13 @@ import { FormsModule } from '@angular/forms';
 import { AppRoutingModule } from './app-routing-module';
 import { App } from './app';
 import { Generos } from './generos/generos';
+import { Bandas } from './bandas/bandas';
 
 @NgModule({
   declarations: [
     App,
-    Generos
+    Generos,
+    Bandas
   ],
   imports: [
     BrowserModule,

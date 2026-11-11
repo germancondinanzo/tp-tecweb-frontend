@@ -1,0 +1,24 @@
+<h2>Bandas</h2>
+
+<p>Total: {{ bandas.length }}</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>Nombre</th>
+      <th>País</th>
+      <th>Año</th>
+      <th>Género</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let banda of bandas">
+      <td>{{ banda.id }}</td>
+      <td>{{ banda.nombre }}</td>
+      <td>{{ banda.pais }}</td>
+      <td>{{ banda.anioFormacion }}</td>
+      <td>{{ banda.genero.nombre }}</td>
+    </tr>
+  </tbody>
+</table>
