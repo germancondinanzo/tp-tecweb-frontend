@@ -1,0 +1,12 @@
+/* Estilos del componente raíz.
+   Todo lo de acá queda encapsulado en la vista de App (navbar y <main>),
+   no se filtra a los componentes hijos. */
+
+.navbar-brand {
+  font-weight: 600;
+  letter-spacing: 0.02em;
+}
+
+main {
+  max-width: 1100px;
+}

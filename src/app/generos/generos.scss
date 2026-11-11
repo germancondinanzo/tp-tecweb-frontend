@@ -1,0 +1,7 @@
+/* Mismo ajuste que en Bandas, pero encapsulado en este componente:
+   el .card de acá no afecta al de la pantalla de bandas. */
+
+.card {
+  border: 0;
+  box-shadow: 0 1px 3px rgb(0 0 0 / 12%);
+}

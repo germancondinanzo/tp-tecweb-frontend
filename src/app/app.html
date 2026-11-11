@@ -1,6 +1,18 @@
-<nav>
-  <a routerLink="/generos">Géneros</a>
-  <a routerLink="/bandas">Bandas</a>
+<nav class="navbar navbar-expand navbar-dark bg-dark mb-4">
+  <div class="container">
+    <span class="navbar-brand">TP Tecnologías Web</span>
+
+    <ul class="navbar-nav">
+      <li class="nav-item">
+        <a class="nav-link" routerLink="/generos" routerLinkActive="active">Géneros</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" routerLink="/bandas" routerLinkActive="active">Bandas</a>
+      </li>
+    </ul>
+  </div>
 </nav>
 
-<router-outlet></router-outlet>
+<main class="container pb-5">
+  <router-outlet></router-outlet>
+</main>

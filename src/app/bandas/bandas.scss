@@ -1,0 +1,8 @@
+/* Bootstrap ya trae el estilo base de .card (borde + padding).
+   Acá lo reemplazamos por una sombra suave: este archivo es del componente
+   Bandas, así que la regla sólo alcanza a las cards de esta pantalla. */
+
+.card {
+  border: 0;
+  box-shadow: 0 1px 3px rgb(0 0 0 / 12%);
+}
