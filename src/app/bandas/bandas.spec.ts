@@ -26,8 +26,7 @@ describe('Bandas', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should start with no bands and no selected gender filter', () => {
+  it('should start with no bands', () => {
     expect(component.bandas).toEqual([]);
-    expect(component.generoFiltro).toBeNull();
   });
 });

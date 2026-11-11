@@ -11,21 +11,8 @@ export class BandasService {
 
   constructor(private readonly http: HttpClient) { }
 
-  getAll(generoId?: number, pais?: string, orderBy?: 'anioASC' | 'anioDESC'): Observable<Banda[]> {
-    let url = this.url;
-    const params: string[] = [];
-    if (generoId !== undefined) {
-      params.push(`generoId=${generoId}`);
-    }
-    if (pais) {
-      params.push(`pais=${encodeURIComponent(pais)}`);
-    }
-    if (orderBy) {
-      params.push(`order=${orderBy}`);
-    }
-    if (params.length > 0) {
-      url += '?' + params.join('&');
-    }
+  getAll(generoId?: number): Observable<Banda[]> {
+    const url = generoId !== undefined ? `${this.url}?generoId=${generoId}` : this.url;
     return this.http.get<Banda[]>(url);
   }
 
