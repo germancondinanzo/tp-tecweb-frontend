@@ -14,15 +14,18 @@ export class Bandas implements OnInit {
 
   bandas: Banda[] = [];
   generos: Genero[] = [];
+  paises: string[] = [];
+  paisFiltro: string | undefined = undefined;
+  orderBy: 'anioASC' | 'anioDESC' | undefined = undefined;
   generoFiltro: number | null = null;
   editandoId: number | null = null;
+
+  cargando = false;
+  error = '';
 
   form = {
     nombre: '', pais: '', anioFormacion: null as number | null, generoId: null as number | null,
   };
-
-  cargando = false;
-  error = '';
 
   constructor(
     private readonly bandasService: BandasService,
@@ -31,8 +34,13 @@ export class Bandas implements OnInit {
 
   ngOnInit(): void {
     this.generosService.getAll().subscribe({
-      next: (datos) => { this.generos = datos; },
+      next: (datos) => { this.generos = datos; this.paises = [...new Set(datos.map((g: any) => g.pais))]; },
       error: (err) => this.error = 'Error al cargar géneros: ' + (err.error?.message || err.message),
+    });
+    // Cargar paises únicos desde las bandas
+    this.bandasService.getAll().subscribe({
+      next: (datos) => { this.paises = [...new Set(datos.map((b: any) => b.pais))].sort(); },
+      error: (err) => this.error = 'Error al obtener paises: ' + (err.error?.message || err.message),
     });
     this.cargarBandas();
   }
@@ -40,7 +48,7 @@ export class Bandas implements OnInit {
   cargarBandas(): void {
     this.cargando = true;
     this.error = '';
-    this.bandasService.getAll(this.generoFiltro ?? undefined).subscribe({
+    this.bandasService.getAll(this.generoFiltro ?? undefined, this.paisFiltro, this.orderBy).subscribe({
       next: (datos) => { this.bandas = datos; this.cargando = false; },
       error: (err) => {
         this.error = 'Error al cargar bandas: ' + (err.error?.message || err.message);

@@ -24,7 +24,7 @@
           placeholder="The Beatles"
           required
         />
-        <div *ngIf="!form.nombre && submitted" class="form-text text-danger">El nombre es requerido</div>
+        <div *ngIf="!form.nombre" class="form-text text-danger">El nombre es requerido</div>
       </div>
 
       <!-- País -->
@@ -38,7 +38,7 @@
           placeholder="Reino Unido"
           required
         />
-        <div *ngIf="!form.pais && submitted" class="form-text text-danger">El país es requerido</div>
+        <div *ngIf="!form.pais" class="form-text text-danger">El país es requerido</div>
       </div>
 
       <!-- Año -->
@@ -68,6 +68,59 @@
         <div *ngIf="form.generoId === null" class="form-text text-danger">Elegí un género</div>
       </div>
 
+      <!-- Filtros -->
+      <div class="col-12 mb-3">
+        <hr />
+        <div class="row g-2">
+          <div class="col-6">
+            <label class="form-label small">Filtrar por género:</label>
+            <select
+              class="form-select form-select-sm"
+              [(ngModel)]="generoFiltro"
+              (ngModelChange)="cargarBandas()"
+            >
+              <option [ngValue]="null">Todos</option>
+              <option *ngFor="let genero of generos" [ngValue]="genero.id">
+                {{ genero.nombre }}
+              </option>
+            </select>
+          </div>
+
+          <div class="col-6">
+            <label class="form-label small">Filtrar por país:</label>
+            <select
+              class="form-select form-select-sm"
+              [(ngModel)]="paisFiltro"
+              (ngModelChange)="cargarBandas()"
+            >
+              <option value="">Todos</option>
+              <option *ngFor="let p of paises" [value]="p">
+                {{ p }}
+              </option>
+            </select>
+          </div>
+        </div>
+
+        <div class="row g-2 mt-2">
+          <div class="col-6">
+            <label class="form-label small">Ordenar por:</label>
+            <select
+              class="form-select form-select-sm"
+              [(ngModel)]="orderBy"
+              (ngModelChange)="cargarBandas()"
+            >
+              <option value="null">Ninguno (por nombre)</option>
+              <option value="anioASC">Año ascendente</option>
+              <option value="anioDESC">Año descendente</option>
+            </select>
+          </div>
+
+          <div class="col-6 text-end">
+            <span class="badge text-bg-secondary">Total: {{ bandas.length }}</span>
+          </div>
+        </div>
+      </div>
+
       <div class="col-12 d-flex gap-2">
         <button
           type="submit"
@@ -90,29 +143,9 @@
   </div>
 </div>
 
-<!-- Panel de filtro -->
-<div class="d-flex flex-wrap align-items-center justify-content-between gap-2 mb-3">
-  <div class="d-flex align-items-center gap-2">
-    <label class="form-label mb-0" for="filtroGenero">Género:</label>
-    <select
-      id="filtroGenero"
-      class="form-select form-select-sm w-auto"
-      [(ngModel)]="generoFiltro"
-      (ngModelChange)="cargarBandas()"
-    >
-      <option [ngValue]="null">Todos</option>
-      <option *ngFor="let genero of generos" [ngValue]="genero.id">
-        {{ genero.nombre }}
-      </option>
-    </select>
-  </div>
-
-  <span class="badge text-bg-secondary">Total: {{ bandas.length }}</span>
-</div>
-
 <div class="table-responsive">
   <table class="table table-striped table-hover align-middle">
-    <thead class="table-dark">
+    <thead>
       <tr>
         <th scope="col">ID</th>
         <th scope="col">Nombre</th>
