@@ -1,0 +1,9 @@
+<h2>Géneros</h2>
+
+<p>Total: {{ generos.length }}</p>
+
+<ul>
+  <li *ngFor="let genero of generos">
+    {{ genero.id }} — {{ genero.nombre }}
+  </li>
+</ul>

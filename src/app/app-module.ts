@@ -4,10 +4,12 @@ import { provideHttpClient } from '@angular/common/http';
 
 import { AppRoutingModule } from './app-routing-module';
 import { App } from './app';
+import { Generos } from './generos/generos';
 
 @NgModule({
   declarations: [
-    App
+    App,
+    Generos
   ],
   imports: [
     BrowserModule,

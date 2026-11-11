@@ -1,0 +1,23 @@
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+
+import { Generos } from './generos';
+
+describe('Generos', () => {
+  let component: Generos;
+  let fixture: ComponentFixture<Generos>;
+
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
+      declarations: [Generos]
+    })
+    .compileComponents();
+
+    fixture = TestBed.createComponent(Generos);
+    component = fixture.componentInstance;
+    fixture.detectChanges();
+  });
+
+  it('should create', () => {
+    expect(component).toBeTruthy();
+  });
+});
