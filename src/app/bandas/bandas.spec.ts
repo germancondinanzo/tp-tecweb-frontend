@@ -1,4 +1,8 @@
+import { CommonModule } from '@angular/common';
+import { provideHttpClient } from '@angular/common/http';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { FormsModule } from '@angular/forms';
 
 import { Bandas } from './bandas';
 
@@ -8,7 +12,9 @@ describe('Bandas', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [Bandas]
+      declarations: [Bandas],
+      imports: [CommonModule, FormsModule],
+      providers: [provideHttpClient(), provideHttpClientTesting()],
     })
     .compileComponents();
 
@@ -19,5 +25,10 @@ describe('Bandas', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  it('should start with no bands and no selected gender filter', () => {
+    expect(component.bandas).toEqual([]);
+    expect(component.generoFiltro).toBeNull();
   });
 });

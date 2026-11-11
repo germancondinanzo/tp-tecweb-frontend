@@ -20,10 +20,14 @@ describe('App', () => {
     expect(app).toBeTruthy();
   });
 
-  it('should render title', () => {
+  it('should render the navigation links', () => {
     const fixture = TestBed.createComponent(App);
     fixture.detectChanges();
-    const compiled = fixture.nativeElement as HTMLElement;
-    expect(compiled.querySelector('h1')?.textContent).toContain('Hello, tp-tecweb-frontend');
+
+    const links = (fixture.nativeElement as HTMLElement).querySelectorAll('nav a');
+
+    expect(links.length).toBe(2);
+    expect(links[0].textContent).toContain('Géneros');
+    expect(links[1].textContent).toContain('Bandas');
   });
 });

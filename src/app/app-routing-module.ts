@@ -4,8 +4,10 @@ import { Generos } from './generos/generos';
 import { Bandas } from './bandas/bandas';
 
 const routes: Routes = [
+  { path: '', redirectTo: 'bandas', pathMatch: 'full' },
   { path: 'generos', component: Generos },
   { path: 'bandas', component: Bandas },
+  { path: '**', redirectTo: 'bandas' },
 ];
 
 @NgModule({

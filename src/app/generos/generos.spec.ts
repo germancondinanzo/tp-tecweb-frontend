@@ -1,4 +1,8 @@
+import { CommonModule } from '@angular/common';
+import { provideHttpClient } from '@angular/common/http';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { FormsModule } from '@angular/forms';
 
 import { Generos } from './generos';
 
@@ -8,7 +12,9 @@ describe('Generos', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [Generos]
+      declarations: [Generos],
+      imports: [CommonModule, FormsModule],
+      providers: [provideHttpClient(), provideHttpClientTesting()],
     })
     .compileComponents();
 
@@ -19,5 +25,9 @@ describe('Generos', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  it('should start with an empty list', () => {
+    expect(component.generos).toEqual([]);
   });
 });
