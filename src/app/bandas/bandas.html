@@ -1,4 +1,4 @@
-<h2 class="h4 mb-3">Bandas</h2>
+<h2>Bandas</h2>
 
 <div class="card mb-4">
   <div class="card-body">
@@ -6,31 +6,44 @@
       {{ editandoId === null ? 'Nueva banda' : 'Editando la banda #' + editandoId }}
     </h3>
 
-    <form (ngSubmit)="guardar()" class="row g-3">
+    <!-- Mensaje de error -->
+    <div *ngIf="error" class="alert alert-danger alert-dismissible fade show mb-3">
+      <strong>Error:</strong> {{ error }}
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+
+    <form (ngSubmit)="guardar()" class="row g-3" novalidate>
+      <!-- Nombre -->
       <div class="col-12 col-md-4">
-        <label class="form-label" for="nombre">Nombre</label>
+        <label class="form-label" for="nombre">Nombre <span class="text-danger">*</span></label>
         <input
           id="nombre"
           name="nombre"
           class="form-control"
           [(ngModel)]="form.nombre"
           placeholder="The Beatles"
+          required
         />
+        <div *ngIf="!form.nombre && submitted" class="form-text text-danger">El nombre es requerido</div>
       </div>
 
+      <!-- País -->
       <div class="col-12 col-md-4">
-        <label class="form-label" for="pais">País</label>
+        <label class="form-label" for="pais">País <span class="text-danger">*</span></label>
         <input
           id="pais"
           name="pais"
           class="form-control"
           [(ngModel)]="form.pais"
           placeholder="Reino Unido"
+          required
         />
+        <div *ngIf="!form.pais && submitted" class="form-text text-danger">El país es requerido</div>
       </div>
 
+      <!-- Año -->
       <div class="col-6 col-md-2">
-        <label class="form-label" for="anioFormacion">Año</label>
+        <label class="form-label" for="anioFormacion">Año <span class="text-danger">*</span></label>
         <input
           id="anioFormacion"
           name="anioFormacion"
@@ -38,22 +51,31 @@
           class="form-control"
           [(ngModel)]="form.anioFormacion"
           placeholder="1960"
+          required
         />
+        <div *ngIf="form.anioFormacion && (form.anioFormacion < 1900 || form.anioFormacion > 2100)" class="form-text text-danger">Año debe estar entre 1900 y 2100</div>
       </div>
 
+      <!-- Género -->
       <div class="col-6 col-md-2">
-        <label class="form-label" for="generoId">Género</label>
-        <select id="generoId" name="generoId" class="form-select" [(ngModel)]="form.generoId">
+        <label class="form-label" for="generoId">Género <span class="text-danger">*</span></label>
+        <select id="generoId" name="generoId" class="form-select" [(ngModel)]="form.generoId" required>
           <option [ngValue]="null">Elegí…</option>
           <option *ngFor="let genero of generos" [ngValue]="genero.id">
             {{ genero.nombre }}
           </option>
         </select>
+        <div *ngIf="form.generoId === null" class="form-text text-danger">Elegí un género</div>
       </div>
 
       <div class="col-12 d-flex gap-2">
-        <button type="submit" class="btn btn-primary">
+        <button
+          type="submit"
+          [disabled]="cargando || !form.nombre || !form.pais || form.anioFormacion == null || !form.generoId"
+          class="btn btn-primary"
+        >
           {{ editandoId === null ? 'Agregar' : 'Guardar cambios' }}
+          <span *ngIf="cargando" class="spinnerspinner-border spinner-border-sm align-middle me-2" role="status" aria-hidden="true"></span>
         </button>
         <button
           type="button"
@@ -68,6 +90,7 @@
   </div>
 </div>
 
+<!-- Panel de filtro -->
 <div class="d-flex flex-wrap align-items-center justify-content-between gap-2 mb-3">
   <div class="d-flex align-items-center gap-2">
     <label class="form-label mb-0" for="filtroGenero">Género:</label>

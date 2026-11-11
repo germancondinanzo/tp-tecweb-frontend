@@ -1,26 +1,32 @@
-<h2 class="h4 mb-3">Géneros</h2>
+<h2>Géneros</h2>
 
 <div class="card mb-4">
   <div class="card-body">
     <form (ngSubmit)="crear()" class="row g-2 align-items-end">
       <div class="col-12 col-sm-8 col-md-5">
-        <label class="form-label" for="nuevoGenero">Nuevo género</label>
+        <label class="form-label" for="nuevoGenero">Nuevo género <span class="text-danger">*</span></label>
         <input
           id="nuevoGenero"
           name="nombre"
           class="form-control"
           [(ngModel)]="nuevoNombre"
           placeholder="Ej.: Jazz"
+          required
         />
+        <div *ngIf="!nuevoNombre && submitted" class="form-text text-danger">El nombre es requerido</div>
       </div>
 
       <div class="col-12 col-sm-auto">
-        <button type="submit" class="btn btn-primary">Agregar</button>
+        <button type="submit" class="btn btn-primary" [disabled]="cargando">
+          {{ cargando ? 'Guardando…' : 'Agregar' }}
+          <span *ngIf="cargando" class="spinnerspinner-border spinner-border-sm align-middle me-2" role="status" aria-hidden="true"></span>
+        </button>
       </div>
     </form>
   </div>
 </div>
 
+<!-- Panel -->
 <div class="d-flex justify-content-end mb-3">
   <span class="badge text-bg-secondary">Total: {{ generos.length }}</span>
 </div>
@@ -57,13 +63,14 @@
               class="form-control form-control-sm"
               [(ngModel)]="nombreEditado"
               [name]="'nombre-' + genero.id"
+              required
             />
           </td>
           <td class="text-end text-nowrap">
-            <button class="btn btn-sm btn-success me-1" (click)="guardarEdicion(genero)">
+            <button class="btn btn-success btn-sm me-1" (click)="guardarEdicion(genero)">
               Guardar
             </button>
-            <button class="btn btn-sm btn-outline-secondary" (click)="cancelarEdicion()">
+            <button class="btn btn-outline-secondary btn-sm" (click)="cancelarEdicion()">
               Cancelar
             </button>
           </td>
