@@ -1,1 +1,8 @@
-/* You can add global styles to this file, and also import other style files */
+/* Estilos globales de la aplicación.
+   Bootstrap se carga antes que este archivo (ver "styles" en angular.json),
+   así que acá sólo van ajustes generales. */
+
+body {
+  background-color: #f1f3f5;
+  -webkit-font-smoothing: antialiased;
+}
