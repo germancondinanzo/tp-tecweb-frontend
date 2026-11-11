@@ -1,59 +1,137 @@
-# TpTecwebFrontend
+# TP Tecnologías Web - Frontend (Angular + Deploy)
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 20.3.42.
+## Descripción
 
-## Development server
+Este es el frontend del Trabajo Práctico de la materia Tecnologías Web, correspondiente a la **Segunda Entrega**. Se conecta con el backend de NestJS entregado en la Primera Entrega.
 
-To start a local development server, run:
+El proyecto consume los endpoints del backend para mostrar dos entidades con relación **1:N (Género → Banda)**:
 
-```bash
-ng serve
-```
+- **Género**: Clasificación de tipo musical (ej. Rock, Metal, Pop).
+- **Banda**: Artista con sus campos (nombre, país, año de formación, género).
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+La aplicación es una Single Page Application (SPA) construida con **Angular 20** usando **NgModules** (estándar de la cátedra), **Bootstrap 5** para el diseño responsive y **Template-Driven Forms**.
 
-## Code scaffolding
+---
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+## 📦 Entidades y Relación
 
-```bash
-ng generate component component-name
-```
+| Entidad | Campos | Relación |
+|---|---|---|
+| **Género** | `id`, `nombre` (único) | **1** → muchas **Bandas** |
+| **Banda** | `id`, `nombre`, `país`, `anioFormacion`, `generoId` (FK) | Pertenece a un **Género** |
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+La relación se visualiza en la UI: en la tabla de bandas, la columna "Género" muestra el nombre asociado (`banda.genero.nombre`).
 
-```bash
-ng generate --help
-```
+---
 
-## Building
+## 🚀 Levantamiento del Proyecto
 
-To build the project run:
+El frontend necesita correr sobre el backend de la Primera Entrega. Seguí estos pasos:
 
-```bash
-ng build
-```
+### 1. Levantar el backend
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
-
-## Running unit tests
-
-To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
+Entrá al repositorio del backend (`tp-tecweb-backend`) y seguí sus instrucciones de despliegue local. Normalmente:
 
 ```bash
-ng test
+cd tp-tecweb-backend
+npm install
+npm run start:dev
 ```
 
-## Running end-to-end tests
+El backend correrá en `http://localhost:3000` (puerto configurable).
 
-For end-to-end (e2e) testing, run:
+### 2. Levantar el frontend
 
 ```bash
-ng e2e
+cd tp-tecweb-frontend
+npm install
+npm start
 ```
 
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
+La app estará disponible en `http://localhost:4200/`.
 
-## Additional Resources
+> **Importante:** El frontend realiza peticiones HTTP al backend en `localhost:3000`. Si el backend corren en otro puerto, hay que actualizar el `environment.ts`.
 
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+### 3. Build de producción
+
+```bash
+npm run build
+```
+
+Los archivos compilados quedan en `dist/tp-tecweb-frontend/browser`. Ese directorio es el que se sube a Netlify.
+
+---
+
+## 🌐 Endpoints Consumidos (Backend v1)
+
+| Método | Endpoint | Descripción |
+|---|---|---|
+| `GET /generos` | Listado de todos los géneros |
+| `POST /generos` | Crear un nuevo género |
+| `PUT /generos/:id` | Editar un género |
+| `DELETE /generos/:id` | Borrar un género |
+| `GET /bandas` | Listado de bandas (con filtro opcional `?generoId=`) |
+| `POST /bandas` | Crear una nueva banda |
+| `PUT /bandas/:id` | Editar una banda |
+| `DELETE /bandas/:id` | Borrar una banda |
+
+---
+
+## 📁 Estructura Importante
+
+```
+/src
+  /app          ← Módulo principal y componentes
+    /bandas     ← Componente CRUD de bandas
+    /generos    ← Componente CRUD de géneros
+    /services   ← Servicios HTTP (BandasService, GenerosService)
+    /models     ← Interfaces Banda, BandaPayload, Genero
+  /environments ← environment.ts (dev) y environment.prod (deploy)
+/angular.json   ← Configuración del CLI (Bootstrap 5, budgets)
+/public         ← Archivos estáticos; contiene _redirects para Netlify
+```
+
+---
+
+## 📦 Scripts Disponibles
+
+| Script | Descripción |
+|---|---|
+| `npm install` | Instala dependencias (incluye Bootstrap 5) |
+| `npm start` | Inicia `ng serve` en `http://localhost:4200` |
+| `npm build` | Compila producción (`dist/tp-tecweb-frontend/browser`) |
+| `npm test` | Ejeciona `ng test` (Karma + Jest) |
+
+---
+
+## 📦 Dependencias Clave
+
+- **Angular 20.3.35** — framework
+- **Bootstrap 5.3.8** — estilo y responsive grid (cargado desde `angular.json`)
+- **RxJS 7.8.0** — programación reactiva
+- **Zone.js** — detección de cambios
+
+> **Nota:** No se usan Reactive Forms ni NgRx. El proyecto usa **Template-Driven Forms** (`[(ngModel)]`, `ngModel`, `forms`) tal como indica la consigna.
+
+---
+
+## 🛠️ Posibles Problemas
+
+| Problema | Causa | Solución |
+|---|---|---|
+| `ERR_CONNECTION_REFUSED` | El backend no está corriendo | Levantar `tp-tecweb-backend` |
+| `No provider found for _HttpClient` | El TestBed no tiene `provideHttpClient()` | Los tests ya incluyen `provideHttpClientTesting()` |
+| Estilos no aparecen al recargar | `ng serve` no recarga `angular.json` | Detener y reiniciar `ng serve` (`Ctrl+C` + `npm serve`) |
+| 404 al refrescar `/bandas` en Netlify | Falta `_redirects` | Ya está en `public/_redirects` con `/* /index.html 200` |
+
+---
+
+## 📬 Contacto / Entrega
+
+- **Repositorio frontend:** `https://github.com/germancondinanzo/tp-tecweb-frontend`
+- **Repositorio backend:** `https://github.com/germancondinanzo/tp-tecweb-backend`
+- **Autor:** Trabajo Práctico - Tecnologías Web (TUARI - UNICEN)
+
+---
+
+Hecho con ❤️ usando Angular 20, Bootstrap 5 y TypeScript.
