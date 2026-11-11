@@ -1,5 +1,31 @@
 <h2>Bandas</h2>
 
+<form (ngSubmit)="guardar()">
+  <input name="nombre" [(ngModel)]="form.nombre" placeholder="Nombre" />
+  <input name="pais" [(ngModel)]="form.pais" placeholder="País" />
+
+  <input
+    name="anioFormacion"
+    type="number"
+    [(ngModel)]="form.anioFormacion"
+    placeholder="Año de formación"
+  />
+
+  <select name="generoId" [(ngModel)]="form.generoId">
+    <option [ngValue]="null">Elegí un género</option>
+    <option *ngFor="let genero of generos" [ngValue]="genero.id">
+      {{ genero.nombre }}
+    </option>
+  </select>
+
+  <button type="submit">{{ editandoId === null ? 'Agregar' : 'Guardar cambios' }}</button>
+  <button type="button" *ngIf="editandoId !== null" (click)="cancelarEdicion()">
+    Cancelar
+  </button>
+</form>
+
+<hr />
+
 <label>
   Género:
   <select [(ngModel)]="generoFiltro" (ngModelChange)="cargarBandas()">
@@ -20,6 +46,7 @@
       <th>País</th>
       <th>Año</th>
       <th>Género</th>
+      <th>Acciones</th>
     </tr>
   </thead>
   <tbody>
@@ -29,6 +56,10 @@
       <td>{{ banda.pais }}</td>
       <td>{{ banda.anioFormacion }}</td>
       <td>{{ banda.genero.nombre }}</td>
+      <td>
+        <button (click)="empezarEdicion(banda)">Editar</button>
+        <button (click)="eliminar(banda)">Borrar</button>
+      </td>
     </tr>
   </tbody>
 </table>
