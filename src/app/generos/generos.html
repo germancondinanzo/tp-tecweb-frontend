@@ -13,13 +13,11 @@
           placeholder="Ej.: Jazz"
           required
         />
-        <div *ngIf="!nuevoNombre && submitted" class="form-text text-danger">El nombre es requerido</div>
       </div>
 
       <div class="col-12 col-sm-auto">
         <button type="submit" class="btn btn-primary" [disabled]="cargando">
           {{ cargando ? 'Guardando…' : 'Agregar' }}
-          <span *ngIf="cargando" class="spinnerspinner-border spinner-border-sm align-middle me-2" role="status" aria-hidden="true"></span>
         </button>
       </div>
     </form>
@@ -63,7 +61,6 @@
               class="form-control form-control-sm"
               [(ngModel)]="nombreEditado"
               [name]="'nombre-' + genero.id"
-              required
             />
           </td>
           <td class="text-end text-nowrap">
@@ -75,10 +72,6 @@
             </button>
           </td>
         </ng-template>
-      </tr>
-
-      <tr *ngIf="generos.length === 0">
-        <td colspan="3" class="text-center text-muted py-4">No hay géneros para mostrar.</td>
       </tr>
     </tbody>
   </table>

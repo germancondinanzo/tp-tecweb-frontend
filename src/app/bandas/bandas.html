@@ -6,14 +6,7 @@
       {{ editandoId === null ? 'Nueva banda' : 'Editando la banda #' + editandoId }}
     </h3>
 
-    <!-- Mensaje de error -->
-    <div *ngIf="error" class="alert alert-danger alert-dismissible fade show mb-3">
-      <strong>Error:</strong> {{ error }}
-      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-    </div>
-
     <form (ngSubmit)="guardar()" class="row g-3" novalidate>
-      <!-- Nombre -->
       <div class="col-12 col-md-4">
         <label class="form-label" for="nombre">Nombre <span class="text-danger">*</span></label>
         <input
@@ -24,10 +17,8 @@
           placeholder="The Beatles"
           required
         />
-        <div *ngIf="!form.nombre" class="form-text text-danger">El nombre es requerido</div>
       </div>
 
-      <!-- País -->
       <div class="col-12 col-md-4">
         <label class="form-label" for="pais">País <span class="text-danger">*</span></label>
         <input
@@ -38,10 +29,8 @@
           placeholder="Reino Unido"
           required
         />
-        <div *ngIf="!form.pais" class="form-text text-danger">El país es requerido</div>
       </div>
 
-      <!-- Año -->
       <div class="col-6 col-md-2">
         <label class="form-label" for="anioFormacion">Año <span class="text-danger">*</span></label>
         <input
@@ -53,10 +42,8 @@
           placeholder="1960"
           required
         />
-        <div *ngIf="form.anioFormacion && (form.anioFormacion < 1900 || form.anioFormacion > 2100)" class="form-text text-danger">Año debe estar entre 1900 y 2100</div>
       </div>
 
-      <!-- Género -->
       <div class="col-6 col-md-2">
         <label class="form-label" for="generoId">Género <span class="text-danger">*</span></label>
         <select id="generoId" name="generoId" class="form-select" [(ngModel)]="form.generoId" required>
@@ -65,17 +52,15 @@
             {{ genero.nombre }}
           </option>
         </select>
-        <div *ngIf="form.generoId === null" class="form-text text-danger">Elegí un género</div>
       </div>
 
       <div class="col-12 d-flex gap-2">
         <button
           type="submit"
-          [disabled]="cargando || !form.nombre || !form.pais || form.anioFormacion == null || !form.generoId"
+          [disabled]="!form.nombre || !form.pais || form.anioFormacion == null || !form.generoId"
           class="btn btn-primary"
         >
           {{ editandoId === null ? 'Agregar' : 'Guardar cambios' }}
-          <span *ngIf="cargando" class="spinnerspinner-border spinner-border-sm align-middle me-2" role="status" aria-hidden="true"></span>
         </button>
         <button
           type="button"
@@ -120,10 +105,6 @@
             Borrar
           </button>
         </td>
-      </tr>
-
-      <tr *ngIf="bandas.length === 0">
-        <td colspan="6" class="text-center text-muted py-4">No hay bandas para mostrar.</td>
       </tr>
     </tbody>
   </table>
