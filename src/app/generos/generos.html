@@ -1,5 +1,14 @@
 <h2>Géneros</h2>
 
+<form (ngSubmit)="crear()">
+  <input
+    name="nombre"
+    [(ngModel)]="nuevoNombre"
+    placeholder="Nuevo género"
+  />
+  <button type="submit">Agregar</button>
+</form>
+
 <p>Total: {{ generos.length }}</p>
 
 <ul>

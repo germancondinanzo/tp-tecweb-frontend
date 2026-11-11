@@ -12,6 +12,8 @@ export class Generos implements OnInit {
 
   generos: Genero[] = [];
 
+  nuevoNombre = '';
+
   constructor(private readonly generosService: GenerosService) { }
 
   ngOnInit(): void {
@@ -22,6 +24,20 @@ export class Generos implements OnInit {
       error: (err) => {
         console.error('Error al cargar géneros', err);
       },
+    });
+  }
+
+  crear(): void {
+    const nombre = this.nuevoNombre.trim();
+    if (!nombre) {
+      return;
+    }
+    this.generosService.create(nombre).subscribe({
+      next: (genero) => {
+        this.generos.push(genero);
+        this.nuevoNombre = '';
+      },
+      error: (err) => console.error('Error al crear género', err),
     });
   }
 }
