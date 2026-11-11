@@ -13,6 +13,16 @@
 
 <ul>
   <li *ngFor="let genero of generos">
-    {{ genero.id }} — {{ genero.nombre }}
+    <ng-container *ngIf="editandoId !== genero.id; else modoEdicion">
+      {{ genero.id }} — {{ genero.nombre }}
+      <button (click)="empezarEdicion(genero)">Editar</button>
+      <button (click)="eliminar(genero)">Borrar</button>
+    </ng-container>
+
+    <ng-template #modoEdicion>
+      <input [(ngModel)]="nombreEditado" [name]="'nombre-' + genero.id" />
+      <button (click)="guardarEdicion(genero)">Guardar</button>
+      <button (click)="cancelarEdicion()">Cancelar</button>
+    </ng-template>
   </li>
 </ul>
