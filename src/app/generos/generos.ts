@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { HttpErrorResponse } from '@angular/common/http';
 import { Genero } from '../models/genero';
 import { GenerosService } from '../services/generos.service';
 
@@ -14,15 +15,29 @@ export class Generos implements OnInit {
   nuevoNombre = '';
   editandoId: number | null = null;
   nombreEditado = '';
+
   cargando = false;
+  guardando = false;
   error = '';
 
   constructor(private readonly generosService: GenerosService) { }
 
   ngOnInit(): void {
+    this.cargarGeneros();
+  }
+
+  cargarGeneros(): void {
+    this.cargando = true;
+    this.error = '';
     this.generosService.getAll().subscribe({
-      next: (datos) => { this.generos = datos; },
-      error: (err) => this.error = 'Error al cargar géneros: ' + (err.error?.message || err.message),
+      next: (datos) => {
+        this.generos = datos;
+        this.cargando = false;
+      },
+      error: (err: HttpErrorResponse) => {
+        this.error = this.mensajeError(err, 'Error al cargar géneros');
+        this.cargando = false;
+      },
     });
   }
 
@@ -35,16 +50,16 @@ export class Generos implements OnInit {
       return;
     }
 
-    this.cargando = true;
+    this.guardando = true;
     this.generosService.create(nombre).subscribe({
       next: (genero) => {
         this.generos.push(genero);
         this.nuevoNombre = '';
-        this.cargando = false;
+        this.guardando = false;
       },
-      error: (err) => {
-        this.error = 'Error al crear género: ' + (err.error?.message || err.message);
-        this.cargando = false;
+      error: (err: HttpErrorResponse) => {
+        this.error = this.mensajeError(err, 'Error al crear género');
+        this.guardando = false;
       },
     });
   }
@@ -69,16 +84,16 @@ export class Generos implements OnInit {
       return;
     }
 
-    this.cargando = true;
+    this.guardando = true;
     this.generosService.update(genero.id, nombre).subscribe({
       next: (actualizado) => {
         this.generos = this.generos.map((g) => (g.id === actualizado.id ? actualizado : g));
         this.cancelarEdicion();
-        this.cargando = false;
+        this.guardando = false;
       },
-      error: (err) => {
-        this.error = 'Error al editar género: ' + (err.error?.message || err.message);
-        this.cargando = false;
+      error: (err: HttpErrorResponse) => {
+        this.error = this.mensajeError(err, 'Error al editar género');
+        this.guardando = false;
       },
     });
   }
@@ -87,11 +102,20 @@ export class Generos implements OnInit {
     if (!confirm(`¿Borrar el género "${genero.nombre}"?`)) {
       return;
     }
+    this.error = '';
     this.generosService.remove(genero.id).subscribe({
       next: () => {
         this.generos = this.generos.filter((g) => g.id !== genero.id);
       },
-      error: (err) => this.error = 'Error al borrar género: ' + (err.error?.message || err.message),
+      error: (err: HttpErrorResponse) => {
+        this.error = this.mensajeError(err, 'Error al borrar género');
+      },
     });
+  }
+
+  private mensajeError(err: HttpErrorResponse, contexto: string): string {
+    const m = err.error?.message;
+    const detalle = Array.isArray(m) ? m.join(', ') : (m ?? err.message);
+    return `${contexto}: ${detalle}`;
   }
 }

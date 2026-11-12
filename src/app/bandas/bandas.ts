@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { HttpErrorResponse } from '@angular/common/http';
 import { Banda, BandaPayload } from '../models/banda';
 import { Genero } from '../models/genero';
 import { BandasService } from '../services/bandas.service';
@@ -20,6 +21,10 @@ export class Bandas implements OnInit {
     nombre: '', pais: '', anioFormacion: null as number | null, generoId: null as number | null,
   };
 
+  cargando = false;
+  guardando = false;
+  error = '';
+
   constructor(
     private readonly bandasService: BandasService,
     private readonly generosService: GenerosService,
@@ -30,49 +35,68 @@ export class Bandas implements OnInit {
       next: (datos) => {
         this.generos = datos;
       },
-      error: (err) => console.error('Error al cargar géneros', err),
+      error: (err: HttpErrorResponse) => {
+        this.error = this.mensajeError(err, 'Error al cargar géneros');
+      },
     });
     this.cargarBandas();
   }
 
   cargarBandas(): void {
+    this.cargando = true;
+    this.error = '';
     this.bandasService.getAll().subscribe({
       next: (datos) => {
         this.bandas = datos;
+        this.cargando = false;
       },
-      error: (err) => console.error('Error al cargar bandas', err),
+      error: (err: HttpErrorResponse) => {
+        this.error = this.mensajeError(err, 'Error al cargar bandas');
+        this.cargando = false;
+      },
     });
   }
 
   guardar(): void {
+    this.error = '';
     const nombre = this.form.nombre.trim();
     const pais = this.form.pais.trim();
     const anioFormacion = this.form.anioFormacion;
     const generoId = this.form.generoId;
 
-    if (!nombre || !pais || !anioFormacion || !generoId) {
+    if (!nombre || !pais || anioFormacion == null || !generoId) {
+      this.error = 'Completá todos los campos para guardar la banda';
       return;
     }
 
     const payload: BandaPayload = { nombre, pais, anioFormacion, generoId };
+    this.guardando = true;
 
     if (this.editandoId === null) {
       this.bandasService.create(payload).subscribe({
         next: () => {
+          this.guardando = false;
           this.resetForm();
           this.cargarBandas();
         },
-        error: (err) => console.error('Error al crear banda', err),
+        error: (err: HttpErrorResponse) => {
+          this.error = this.mensajeError(err, 'Error al crear banda');
+          this.guardando = false;
+        },
       });
       return;
     }
 
     this.bandasService.update(this.editandoId, payload).subscribe({
       next: () => {
+        this.guardando = false;
         this.resetForm();
         this.cargarBandas();
       },
-      error: (err) => console.error('Error al editar banda', err),
+      error: (err: HttpErrorResponse) => {
+        this.error = this.mensajeError(err, 'Error al editar banda');
+        this.guardando = false;
+      },
     });
   }
 
@@ -104,9 +128,18 @@ export class Bandas implements OnInit {
     if (!confirm(`¿Borrar la banda "${banda.nombre}"?`)) {
       return;
     }
+    this.error = '';
     this.bandasService.remove(banda.id).subscribe({
       next: () => this.cargarBandas(),
-      error: (err) => console.error('Error al borrar banda', err),
+      error: (err: HttpErrorResponse) => {
+        this.error = this.mensajeError(err, 'Error al borrar banda');
+      },
     });
+  }
+
+  private mensajeError(err: HttpErrorResponse, contexto: string): string {
+    const m = err.error?.message;
+    const detalle = Array.isArray(m) ? m.join(', ') : (m ?? err.message);
+    return `${contexto}: ${detalle}`;
   }
 }

@@ -1,5 +1,12 @@
 <h2>Bandas</h2>
 
+<div *ngIf="cargando" class="alert alert-info d-flex align-items-center gap-2">
+  <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+  Cargando bandas…
+</div>
+
+<div *ngIf="error" class="alert alert-danger">{{ error }}</div>
+
 <div class="card mb-4">
   <div class="card-body">
     <h3 class="h6 text-uppercase text-muted mb-3">
@@ -57,10 +64,10 @@
       <div class="col-12 d-flex gap-2">
         <button
           type="submit"
-          [disabled]="!form.nombre || !form.pais || form.anioFormacion == null || !form.generoId"
+          [disabled]="guardando || !form.nombre || !form.pais || form.anioFormacion == null || !form.generoId"
           class="btn btn-primary"
         >
-          {{ editandoId === null ? 'Agregar' : 'Guardar cambios' }}
+          {{ guardando ? 'Guardando…' : (editandoId === null ? 'Agregar' : 'Guardar cambios') }}
         </button>
         <button
           type="button"
@@ -105,6 +112,10 @@
             Borrar
           </button>
         </td>
+      </tr>
+
+      <tr *ngIf="!cargando && bandas.length === 0">
+        <td colspan="6" class="text-center text-muted py-4">No hay bandas para mostrar.</td>
       </tr>
     </tbody>
   </table>

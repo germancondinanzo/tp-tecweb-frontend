@@ -1,5 +1,12 @@
 <h2>Géneros</h2>
 
+<div *ngIf="cargando" class="alert alert-info d-flex align-items-center gap-2">
+  <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+  Cargando géneros…
+</div>
+
+<div *ngIf="error" class="alert alert-danger">{{ error }}</div>
+
 <div class="card mb-4">
   <div class="card-body">
     <form (ngSubmit)="crear()" class="row g-2 align-items-end">
@@ -16,8 +23,8 @@
       </div>
 
       <div class="col-12 col-sm-auto">
-        <button type="submit" class="btn btn-primary" [disabled]="cargando">
-          {{ cargando ? 'Guardando…' : 'Agregar' }}
+        <button type="submit" class="btn btn-primary" [disabled]="guardando">
+          {{ guardando ? 'Guardando…' : 'Agregar' }}
         </button>
       </div>
     </form>
