@@ -38,6 +38,9 @@ Bootstrap 5 para el diseño responsive y formularios Template-Driven.
 - Manejo de errores del backend como alertas, validación de formularios y estado de carga
   mientras la API responde.
 
+> La explicación completa del código, las decisiones y el flujo de una request está en
+> [`GUIA-FRONTEND.md`](./GUIA-FRONTEND.md).
+
 ## Levantamiento del Proyecto
 
 El frontend necesita correr sobre el backend de la Primera Entrega. Seguí estos pasos:
