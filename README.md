@@ -28,6 +28,16 @@ El proyecto consume los endpoints del backend para mostrar dos entidades con rel
 La aplicación es una SPA construida con Angular 20 usando NgModules (estándar de la cátedra),
 Bootstrap 5 para el diseño responsive y formularios Template-Driven.
 
+### Funcionalidades
+
+- CRUD completo de **géneros** y **bandas**, mostrando la relación 1 a N (cada banda muestra su
+  género como badge y el formulario lo elige con un `<select>`).
+- **Filtro de bandas por género** en el listado: un `<select>` con "Todos los géneros" que
+  consulta `GET /bandas?generoId=` y actualiza la tabla sin recargar la página. El badge muestra
+  el total y aclara cuando está filtrado, y hay un mensaje propio para el caso sin resultados.
+- Manejo de errores del backend como alertas, validación de formularios y estado de carga
+  mientras la API responde.
+
 ## Levantamiento del Proyecto
 
 El frontend necesita correr sobre el backend de la Primera Entrega. Seguí estos pasos:
@@ -86,7 +96,7 @@ Base en producción: `https://tp-tecweb-backend.onrender.com`
 | POST /generos | Crear un nuevo género | |
 | PUT /generos/:id | Editar un género | |
 | DELETE /generos/:id | Borrar un género | |
-| GET /bandas | Listado de bandas (con filtro opcional `?generoId=`) | |
+| GET /bandas | Listado de bandas (con filtro opcional `?generoId=`, usado por el filtro de la UI) | |
 | POST /bandas | Crear una nueva banda | |
 | PUT /bandas/:id | Editar una banda | |
 | DELETE /bandas/:id | Borrar una banda | |
