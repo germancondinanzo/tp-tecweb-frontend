@@ -14,7 +14,7 @@ export class GenerosService {
   getAll(): Observable<Genero[]> {
     return this.http.get<Genero[]>(this.url);
   }
-create(nombre: string): Observable<Genero> {
+  create(nombre: string): Observable<Genero> {
     return this.http.post<Genero>(this.url, { nombre });
   }
 
