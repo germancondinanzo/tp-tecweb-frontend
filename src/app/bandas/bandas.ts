@@ -17,6 +17,9 @@ export class Bandas implements OnInit {
   generos: Genero[] = [];
   editandoId: number | null = null;
 
+  /** Filtro del listado por género. `null` = todos los géneros. */
+  filtroGeneroId: number | null = null;
+
   form = {
     nombre: '', pais: '', anioFormacion: null as number | null, generoId: null as number | null,
   };
@@ -45,7 +48,7 @@ export class Bandas implements OnInit {
   cargarBandas(): void {
     this.cargando = true;
     this.error = '';
-    this.bandasService.getAll().subscribe({
+    this.bandasService.getAll(this.filtroGeneroId ?? undefined).subscribe({
       next: (datos) => {
         this.bandas = datos;
         this.cargando = false;
